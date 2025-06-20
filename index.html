@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital SA | LinkFusion Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Vibrant Professional Theme */
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #f72585;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #2b2d42;
+            --text-light: #8d99ae;
+            --border: #e9ecef;
+            --success: #4cc9f0;
+            --facebook: #1877f2;
+            --instagram: #e4405f;
+            --tiktok: #000000;
+            --whatsapp: #25d366;
+        }
+
+        [data-theme="dark"] {
+            --primary: #4895ef;
+            --secondary: #560bad;
+            --accent: #b5179e;
+            --bg: #121212;
+            --card-bg: #1e1e1e;
+            --text: #f8f9fa;
+            --text-light: #adb5bd;
+            --border: #343a40;
+            --facebook: #3b5998;
+            --instagram: #c13584;
+            --tiktok: #69c9d0;
+            --whatsapp: #128c7e;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            background-color: var(--bg);
+            color: var(--text);
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .logo-container {
+            margin: 0 auto 1.5rem;
+            width: 100px;
+            height: 100px;
+            position: relative;
+        }
+
+        .logo {
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            object-fit: cover;
+            border: 3px solid var(--border);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .logo:hover {
+            transform: rotate(5deg) scale(1.05);
+            border-color: var(--primary);
+            box-shadow: 0 8px 15px rgba(67, 97, 238, 0.2);
+        }
+
+        h1 {
+            color: var(--text);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            font-size: 1.8rem;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+
+        .tagline {
+            color: var(--text-light);
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .highlight-box {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--accent);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            text-align: left;
+        }
+
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        a.link-button {
+            background-color: var(--card-bg);
+            color: var(--text);
+            padding: 1.2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 500;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        a.link-button::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        a.link-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+            border-color: var(--primary);
+        }
+
+        a.link-button:hover::before {
+            width: 8px;
+        }
+
+        a.link-button i {
+            font-size: 1.2rem;
+            color: var(--primary);
+            transition: transform 0.3s ease;
+        }
+
+        a.link-button:hover i {
+            transform: scale(1.2);
+        }
+
+        .footer {
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .powered-by {
+            font-weight: 600;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            padding: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(15deg);
+            border-color: var(--accent);
+        }
+
+        /* Operating Hours Badge */
+        .hours-badge {
+            display: inline-block;
+            background: var(--card-bg);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin: 0.5rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border: 1px solid var(--border);
+        }
+
+        /* Location Chip */
+        .location-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--card-bg);
+            padding: 0.6rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            margin: 0.5rem 0 1.5rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border: 1px solid var(--border);
+        }
+
+        /* Social Media Bar */
+        .social-bar {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .social-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .social-icon:hover {
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        }
+
+        .facebook { background-color: var(--facebook); }
+        .instagram { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); }
+        .tiktok { background-color: var(--tiktok); position: relative; overflow: hidden; }
+        .tiktok::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #69c9d0 0%, #ee1d52 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .tiktok:hover::before { opacity: 1; }
+        .tiktok i { position: relative; z-index: 1; }
+        .whatsapp { background-color: var(--whatsapp); }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Theme Toggle -->
+    <button class="theme-toggle pulse" id="themeToggle" aria-label="Toggle theme">
+        <span id="themeIcon">🌙</span>
+    </button>
+
+    <!-- Logo with Hover Effect -->
+    <div class="logo-container">
+        <img src="logo.png" alt="Digital SA Logo" class="logo">
+    </div>
+    
+    <!-- Business Name -->
+    <h1>Digital SA</h1>
+    <p class="tagline">Your Digital Partner for Career, Tech & Play</p>
+    
+    <!-- Social Media Icons -->
+    <div class="social-bar">
+        <a href="https://www.facebook.com/profile.php?id=61577171795135&mibextid=ZbWKwL" class="social-icon facebook" target="_blank">
+            <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="https://www.instagram.com/digital_sa_desk1?igsh=ZGUzMzM3NWJiOQ==" class="social-icon instagram" target="_blank">
+            <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://www.tiktok.com/@digital_sa5?_t=ZM-8xMediSlF5C&_r=1" class="social-icon tiktok" target="_blank">
+            <i class="fab fa-tiktok"></i>
+        </a>
+        <a href="https://wa.me/27829699191" class="social-icon whatsapp" target="_blank">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </div>
+    
+    <!-- Location -->
+    <div class="location-chip">
+        <i class="fas fa-map-marker-alt"></i>
+        471 Hole in one, Rumsig, Roodeport
+    </div>
+    
+    <!-- Operating Hours -->
+    <div class="hours-badge">
+        <i class="far fa-clock"></i> Mon-Fri: 9AM - 6PM
+    </div>
+
+    <!-- Highlight Box -->
+    <div class="highlight-box">
+        Comprehensive digital solutions to help you succeed professionally, establish your online presence, and enjoy technology to its fullest.
+    </div>
+    
+    <!-- Main Links -->
+    <div class="links">
+        <a href="https://digital-sa.github.io/support/" class="link-button">
+            <i class="fas fa-globe"></i> Official Website
+        </a>
+        <a href="mailto:digitalsadesk@gmail.com" class="link-button">
+            <i class="fas fa-envelope"></i> Email Us
+        </a>
+        <a href="tel:+27829699191" class="link-button">
+            <i class="fas fa-phone-alt"></i> Call Us
+        </a>
+        <a href="https://wa.me/27685753002" class="link-button">
+            <i class="fab fa-whatsapp"></i> WhatsApp Us
+        </a>
+        <a href="https://digital-sa.github.io/support/#services" class="link-button">
+            <i class="fas fa-laptop-code"></i> Our Services
+        </a>
+        
+    </div>
+    
+    <!-- Footer -->
+    <div class="footer">
+        <p>Powered by <span class="powered-by">LinkFusion Pro</span> — A Digital SA Service</p>
+    </div>
+
+    <script>
+        // Theme Toggle Logic
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const html = document.documentElement;
+
+        // Check system preference
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            html.setAttribute('data-theme', 'dark');
+            themeIcon.textContent = '☀️';
+        }
+
+        // Manual toggle
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                html.removeAttribute('data-theme');
+                themeIcon.textContent = '🌙';
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                themeIcon.textContent = '☀️';
+            }
+        });
+
+        // Add pulse animation every 10 seconds
+        setInterval(() => {
+            themeToggle.classList.add('pulse');
+            setTimeout(() => {
+                themeToggle.classList.remove('pulse');
+            }, 2000);
+        }, 10000);
+    </script>
+</body>
+</html>
