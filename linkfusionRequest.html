@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital SA | LinkFusion Request</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reuse the same CSS variables and base styles from the main page */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #f72585;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #2b2d42;
+            --text-light: #8d99ae;
+            --border: #e9ecef;
+            --success: #4cc9f0;
+        }
+
+        [data-theme="dark"] {
+            --primary: #4895ef;
+            --secondary: #560bad;
+            --accent: #b5179e;
+            --bg: #121212;
+            --card-bg: #1e1e1e;
+            --text: #f8f9fa;
+            --text-light: #adb5bd;
+            --border: #343a40;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            background-color: var(--bg);
+            color: var(--text);
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .logo-container {
+            margin: 0 auto 1.5rem;
+            width: 100px;
+            height: 100px;
+            position: relative;
+        }
+
+        .logo {
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            object-fit: cover;
+            border: 3px solid var(--border);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: var(--text);
+            margin-bottom: 1rem;
+            font-weight: 700;
+            font-size: 1.8rem;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+
+        .form-container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            text-align: left;
+            border-left: 4px solid var(--accent);
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: inherit;
+            background-color: var(--bg);
+            color: var(--text);
+            transition: all 0.3s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+
+        .submit-btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .instructions {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--success);
+            font-size: 0.9rem;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            padding: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--primary);
+            text-decoration: none;
+            margin-bottom: 1rem;
+        }
+
+        .back-btn:hover {
+            text-decoration: underline;
+        }
+
+        /* Loading spinner */
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Success message */
+        .success-message {
+            display: none;
+            background-color: rgba(76, 201, 240, 0.1);
+            border-left: 4px solid var(--success);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span id="themeIcon">🌙</span>
+    </button>
+
+    <!-- Logo -->
+    <div class="logo-container">
+        <img src="logo.png" alt="Digital SA Logo" class="logo">
+    </div>
+    
+    <!-- Back Button -->
+    <a href="index.html" class="back-btn">
+        <i class="fas fa-arrow-left"></i> Back to Main Page
+    </a>
+    
+    <!-- Title -->
+    <h1>LinkFusion Request</h1>
+    
+    <!-- Instructions -->
+    <div class="instructions">
+        <p><strong>How it works:</strong> Follow our social media channels, then fill out this form to request your free LinkFusion link. We'll create and send you a custom multi-link for your business or personal use.</p>
+    </div>
+
+    <!-- Success Message (hidden by default) -->
+    <div class="success-message" id="successMessage">
+        <i class="fas fa-check-circle" style="color: var(--success); font-size: 2rem; margin-bottom: 0.5rem;"></i>
+        <h3>Request Submitted Successfully!</h3>
+        <p>Thank you for your request. We'll review your information and send you your LinkFusion link soon.</p>
+    </div>
+    
+    <!-- Request Form -->
+    <div class="form-container" id="requestForm">
+        <form id="linkfusionForm" action="https://formspree.io/f/xyzjddpk" method="POST">
+            <input type="hidden" name="_subject" value="New LinkFusion Request">
+            <input type="hidden" name="_replyto" id="autoReplyTo">
+            
+            <div class="form-group">
+                <label for="name">Your Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="social">Social Media Handle (where you followed us)</label>
+                <input type="text" id="social" name="social" placeholder="e.g., @digital_sa_desk1" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="platform">Platform You Followed Us On</label>
+                <select id="platform" name="platform" required>
+                    <option value="">Select platform</option>
+                    <option value="facebook">Facebook</option>
+                    <option value="instagram">Instagram</option>
+                    <option value="tiktok">TikTok</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="links">Links You Want to Include (one per line)</label>
+                <textarea id="links" name="links" rows="5" required placeholder="Example:
+https://yourwebsite.com
+https://instagram.com/yourprofile
+https://wa.me/yournumber"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="notes">Additional Notes</label>
+                <textarea id="notes" name="notes" rows="3" placeholder="Any special requests or instructions"></textarea>
+            </div>
+            
+            <button type="submit" class="submit-btn" id="submitBtn">
+                <span class="spinner" id="spinner"></span>
+                <span id="submitText">Submit Request</span>
+            </button>
+        </form>
+    </div>
+
+    <script>
+        // Theme Toggle Logic (same as main page)
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const html = document.documentElement;
+
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            html.setAttribute('data-theme', 'dark');
+            themeIcon.textContent = '☀️';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                html.removeAttribute('data-theme');
+                themeIcon.textContent = '🌙';
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                themeIcon.textContent = '☀️';
+            }
+        });
+
+        // Form submission
+        document.getElementById('linkfusionForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const form = e.target;
+            const submitBtn = document.getElementById('submitBtn');
+            const spinner = document.getElementById('spinner');
+            const submitText = document.getElementById('submitText');
+            
+            // Set the reply-to field to match the email field
+            document.getElementById('autoReplyTo').value = document.getElementById('email').value;
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            spinner.style.display = 'inline-block';
+            submitText.textContent = 'Processing...';
+            
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: new FormData(form),
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    // Show success message
+                    document.getElementById('requestForm').style.display = 'none';
+                    document.getElementById('successMessage').style.display = 'block';
+                    
+                    // Reset form
+                    form.reset();
+                } else {
+                    throw new Error('Form submission failed');
+                }
+            } catch (error) {
+                alert('There was a problem submitting your request. Please try again later.');
+                console.error('Error:', error);
+            } finally {
+                // Reset button state
+                submitBtn.disabled = false;
+                spinner.style.display = 'none';
+                submitText.textContent = 'Submit Request';
+            }
+        });
+    </script>
+</body>
+</html>
